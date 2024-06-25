@@ -81,4 +81,42 @@ function KnightMoves(start, end) {
   const board = buildBoard();
   const startIndex = getIndex(board, start);
   const endIndex = getIndex(board, end);
+  const bsfInfo = buildSearchArray(board, startIndex);
+  const adjacentList = buildAdjacentList(board);
+  const queue = [startIndex];
+  let current;
+
+  while (queue.length > 0) {
+    current = queue.shift();
+    for (let i = 0; i < adjacentList[current].length; i++) {
+      let currentNeighbor = adjacentList[current][i];
+      if (currentNeighbor === endIndex) {
+        bsfInfo[currentNeighbor].parent = current;
+        let path = [];
+        createPath(
+          board,
+          bsfInfo,
+          bsfInfo[currentNeighbor],
+          currentNeighbor,
+          path
+        );
+        path.reverse();
+        path.unshift(start);
+        console.log(`You made it in ${
+          path.length - 1
+        } moves! Your path is as follows:
+          path`);
+        return path;
+      } else {
+        if (bsfInfo[currentNeighbor.distance === null]) {
+          bsfInfo[currentNeighbor].distance = bsfInfo[current].distance + 1;
+          bsfInfo[currentNeighbor].parent = current;
+          queue.push(currentNeighbor);
+        }
+      }
+    }
+  }
+  return "Impossible move";
 }
+
+module.exports = KnightMoves;
